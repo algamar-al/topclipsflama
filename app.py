@@ -36,7 +36,7 @@ def search_youtube(query, key, period):
         payload=json.load(response)
     results=[{'id':item['id']['videoId'],'title':item['snippet']['title'],
              'url':'https://www.youtube.com/watch?v='+item['id']['videoId'],
-             'published':item['snippet']['publishedAt']} for item in payload.get('items',[])]
+             'published':item['snippet']['publishedAt']} for item in payload.get('items',[]) if item.get('id',{}).get('videoId')]
     if results:
         p={'part':'statistics','id':','.join(x['id'] for x in results),'key':key}
         with urllib.request.urlopen('https://www.googleapis.com/youtube/v3/videos?'+urllib.parse.urlencode(p),timeout=15) as response:
